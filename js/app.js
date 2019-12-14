@@ -11,19 +11,25 @@ function onLoad() {
     success: (results) => {
       console.log(results);
       results.articles.forEach(function(result, index){
+        let impressionsEl = document.createElement('section');
         impressionsEl.innerHTML = index + 1;
-        let title = result.title;
-        titleEl.innerHTML = title;
-        let content = result.description;
-        contentEl.innerHTML = content;
-        let url = result.url;
-        var urlEl = document.querySelector('a[id="urlEl"]');
-        urlEl.href = url;
+        impressionsElement.append(impressionsEl);
         let image = result.urlToImage;
-        var imageElement = document.querySelector('img[id="imageEl"]');
-        imageElement.src = image;
-        //$("ul").append("<li>"+result.content.title+"</li>")
-        //break;
+        let imageElement = document.createElement('img');
+        imageElement.setAttribute('src', image);
+        featuredImageEl.append(imageElement);
+        let title = result.title;
+        let titleEl = document.createElement('h3');
+        titleEl.innerHTML = title;
+        articleContentEl.append(titleEl);
+        let url = result.url;
+        let urlEl = document.createElement('a');
+        urlEl.setAttribute('href', url);
+        articleContentEl.append(urlEl);
+        let content = result.description;
+        let contentEl = document.createElement('h6');
+        contentEl.innerHTML = content;
+        articleContentEl.append(contentEl);
       })
     }
   })

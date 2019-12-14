@@ -17,10 +17,11 @@ function onLoad() {
         let content = result.description;
         contentEl.innerHTML = content;
         let url = result.url;
-        //urlEl.innerHTML = url;
-        document.getElementById(urlEl).href = url;
-        let image = result.urlToImage; //set up to src in feedr
-        document.getElementById(imageEl).src = image;
+        var urlEl = document.querySelector('a[id="urlEl"]');
+        urlEl.href = url;
+        let image = result.urlToImage;
+        var imageElement = document.querySelector('img[id="imageEl"]');
+        imageElement.src = image;
         //$("ul").append("<li>"+result.content.title+"</li>")
         //break;
       })

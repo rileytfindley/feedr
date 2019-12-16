@@ -1,3 +1,18 @@
+function loadPopUp(url, title, content) {
+  let titleEl = document.createElement('h1');
+  titleEl.innerHTML = title;
+  let contentEl = document.createElement('p');
+  contentEl.innerHTML = content;
+  popUpEl.append(contentEl);
+  let urlEl = document.createElement('a');
+  urlEl.setAttribute('href', url);
+  urlEl.innerHTML = "Read more from source";
+} //loadPopUp
+
+function toggleClassFunc() {
+  $("img").toggleClass("#search.active")
+} //toggleClass
+
 function onLoad() {
   site = $.ajax({
     url:"https://newsapi.org/v2/top-headlines?country=us&apiKey=" + newsapi,
@@ -12,6 +27,11 @@ function onLoad() {
         if (result.urlToImage == null) {
           counter++;
         } else {
+          let content = result.description;
+          let contentEl = document.createElement('h6');
+          contentEl.innerHTML = content;
+          contentEl.className = "appended";
+          articleContentEl.append(contentEl);
           let impressionsEl = document.createElement('section');
           impressionsEl.innerHTML = index + 1 - counter;
           impressionsEl.className = "appended";
@@ -24,15 +44,11 @@ function onLoad() {
           let title = result.title;
           let url = result.url;
           let urlEl = document.createElement('a');
-          urlEl.setAttribute('href', url);
+          urlEl.setAttribute("onclick", function() { loadPopUp(url, title, content)});
+          //urlEl.setAttribute('href', url);
           urlEl.innerHTML = title;
           urlEl.className = "appended";
           articleContentEl.append(urlEl);
-          let content = result.description;
-          let contentEl = document.createElement('h6');
-          contentEl.innerHTML = content;
-          contentEl.className = "appended";
-          articleContentEl.append(contentEl);
         } //if-else
       })
     } //success

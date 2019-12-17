@@ -1,17 +1,63 @@
-function loadPopUp(url, title, content) {
-  let titleEl = document.createElement('h1');
-  titleEl.innerHTML = title;
-  let contentEl = document.createElement('p');
-  contentEl.innerHTML = content;
-  popUpEl.append(contentEl);
-  let urlEl = document.createElement('a');
-  urlEl.setAttribute('href', url);
-  urlEl.innerHTML = "Read more from source";
-} //loadPopUp
+// function loadPopUp(url, title, content) {
+//   let titleEl = document.createElement('h1');
+//   titleEl.innerHTML = title;
+//   let contentEl = document.createElement('p');
+//   contentEl.innerHTML = content;
+//   popUpEl.append(contentEl);
+//   let urlEl = document.createElement('a');
+//   urlEl.setAttribute('href', url);
+//   urlEl.innerHTML = "Read more from source";
+// } //loadPopUp
+//
+// function toggleClassFunc() {
+//   $("img").toggleClass("#search.active")
+// } //toggleClass
 
-function toggleClassFunc() {
-  $("img").toggleClass("#search.active")
-} //toggleClass
+let mainEl = document.getElementById("main");
+
+function loadPage(result, index) {
+  //creating main article section
+  let articleEl = document.createElement("article");
+  articleEl.classList.add("article");
+  //creating image content
+  let featuredImage = document.createElement("section");
+  let photoUrl;
+  if (result.urlToImage == null) {
+    photoUrl = "https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519__340.jpg";
+  } else {
+    photoUrl = result.urlToImage;
+  } //if-else
+  let image = document.createElement("img");
+  featuredImage.classList.add("featuredImage");
+  image.setAttribute("src", photoUrl);
+  featuredImage.appendChild(image);
+  //creating article content
+  let articleContent = document.createElement("section");
+  let link = document.createElement("a");
+  let articleTitle = document.createElement("h3");
+  let description = document.createElement("h6");
+  articleContent.classList.add("articleContent");
+  link.setAttribute("href", "#");
+  articleTitle.innerHTML = result.title;
+  description.innerHTML = result.description;
+  link.appendChild(articleTitle)
+  articleContent.appendChild(link);
+  articleContent.appendChild(description);
+  //creating impressions
+  let impressions = document.createElement("section");
+  impressions.classList.add("impressions");
+  impressions.innerHTML = index + 1;
+  //creating clearfix
+  let clearFix = document.createElement("div");
+  clearFix.classList.add("clearfix");
+  //appending everything to article
+  articleEl.appendChild(featuredImage);
+  articleEl.appendChild(articleContent);
+  articleEl.appendChild(impressions);
+  articleEl.appendChild(clearFix);
+  //appending article to main section
+  mainEl.appendChild(articleEl.cloneNode(true));
+} //loadPage
 
 function onLoad() {
   site = $.ajax({
@@ -22,34 +68,48 @@ function onLoad() {
     },
     success: (results) => {
       console.log(results);
-      let counter = 0;
       results.articles.forEach(function(result, index){
+        //creating main article section
+        let articleEl = document.createElement("article");
+        articleEl.classList.add("article");
+        //creating image content
+        let featuredImage = document.createElement("section");
+        let photoUrl;
         if (result.urlToImage == null) {
-          counter++;
+          photoUrl = "https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519__340.jpg";
         } else {
-          let content = result.description;
-          let contentEl = document.createElement('h6');
-          contentEl.innerHTML = content;
-          contentEl.className = "appended";
-          articleContentEl.append(contentEl);
-          let impressionsEl = document.createElement('section');
-          impressionsEl.innerHTML = index + 1 - counter;
-          impressionsEl.className = "appended";
-          impressionsElement.append(impressionsEl);
-          let image = result.urlToImage;
-          let imageElement = document.createElement('img');
-          imageElement.setAttribute('src', image);
-          imageElement.className = "appended";
-          featuredImageEl.append(imageElement);
-          let title = result.title;
-          let url = result.url;
-          let urlEl = document.createElement('a');
-          urlEl.setAttribute("onclick", function() { loadPopUp(url, title, content)});
-          //urlEl.setAttribute('href', url);
-          urlEl.innerHTML = title;
-          urlEl.className = "appended";
-          articleContentEl.append(urlEl);
+          photoUrl = result.urlToImage;
         } //if-else
+        let image = document.createElement("img");
+        featuredImage.classList.add("featuredImage");
+        image.setAttribute("src", photoUrl);
+        featuredImage.appendChild(image);
+        //creating article content
+        let articleContent = document.createElement("section");
+        let link = document.createElement("a");
+        let articleTitle = document.createElement("h3");
+        let description = document.createElement("h6");
+        articleContent.classList.add("articleContent");
+        link.setAttribute("href", "#");
+        articleTitle.innerHTML = result.title;
+        description.innerHTML = result.description;
+        link.appendChild(articleTitle)
+        articleContent.appendChild(link);
+        articleContent.appendChild(description);
+        //creating impressions
+        let impressions = document.createElement("section");
+        impressions.classList.add("impressions");
+        impressions.innerHTML = index + 1;
+        //creating clearfix
+        let clearFix = document.createElement("div");
+        clearFix.classList.add("clearfix");
+        //appending everything to article
+        articleEl.appendChild(featuredImage);
+        articleEl.appendChild(articleContent);
+        articleEl.appendChild(impressions);
+        articleEl.appendChild(clearFix);
+        //appending article to main section
+        mainEl.appendChild(articleEl.cloneNode(true));
       })
     } //success
   })
@@ -64,30 +124,10 @@ function feedr() {
       format: 'json'
     },
     success: (results) => {
+      mainEl.innerHTML = "";
       console.log(results);
-      let counter = 0;
       results.articles.forEach(function(result, index){
-        if (result.urlToImage == null) {
-          counter++;
-        } else {
-          let impressionsEl = document.createElement('section');
-          impressionsEl.innerHTML = index + 1 - counter;
-          impressionsElement.append(impressionsEl);
-          let image = result.urlToImage;
-          let imageElement = document.createElement('img');
-          imageElement.setAttribute('src', image);
-          featuredImageEl.append(imageElement);
-          let title = result.title;
-          let url = result.url;
-          let urlEl = document.createElement('a');
-          urlEl.setAttribute('href', url);
-          urlEl.innerHTML = title;
-          articleContentEl.append(urlEl);
-          let content = result.description;
-          let contentEl = document.createElement('h6');
-          contentEl.innerHTML = content;
-          articleContentEl.append(contentEl);
-        } //if-else
+        loadPage(result, index);
       })
     } //success
   })
@@ -101,34 +141,10 @@ function cnn() {
       format: 'json'
     },
     success: (results) => {
-      // var els = document.getElementsByClassName("appended");
-      // Array.prototpe.forEach.call(els, function(el) {
-      //   els.remove(el);
-      // });
+      mainEl.innerHTML = "";
       console.log(results);
-      let counter = 0;
       results.articles.forEach(function(result, index){
-        if (result.urlToImage == null) {
-          counter++;
-        } else {
-          let impressionsEl = document.createElement('section');
-          impressionsEl.innerHTML = index + 1 - counter;
-          impressionsElement.append(impressionsEl);
-          let image = result.urlToImage;
-          let imageElement = document.createElement('img');
-          imageElement.setAttribute('src', image);
-          featuredImageEl.append(imageElement);
-          let title = result.title;
-          let url = result.url;
-          let urlEl = document.createElement('a');
-          urlEl.setAttribute('href', url);
-          urlEl.innerHTML = title;
-          articleContentEl.append(urlEl);
-          let content = result.description;
-          let contentEl = document.createElement('h6');
-          contentEl.innerHTML = content;
-          articleContentEl.append(contentEl);
-        } //if-else
+        loadPage(result, index);
       })
     } //success
   })
@@ -142,30 +158,10 @@ function abc() {
       format: 'json'
     },
     success: (results) => {
+      mainEl.innerHTML = "";
       console.log(results);
-      let counter = 0;
       results.articles.forEach(function(result, index){
-        if (result.urlToImage == null) {
-          counter++;
-        } else {
-          let impressionsEl = document.createElement('section');
-          impressionsEl.innerHTML = index + 1 - counter;
-          impressionsElement.append(impressionsEl);
-          let image = result.urlToImage;
-          let imageElement = document.createElement('img');
-          imageElement.setAttribute('src', image);
-          featuredImageEl.append(imageElement);
-          let title = result.title;
-          let url = result.url;
-          let urlEl = document.createElement('a');
-          urlEl.setAttribute('href', url);
-          urlEl.innerHTML = title;
-          articleContentEl.append(urlEl);
-          let content = result.description;
-          let contentEl = document.createElement('h6');
-          contentEl.innerHTML = content;
-          articleContentEl.append(contentEl);
-        } //if-else
+        loadPage(result, index);
       })
     } //success
   })
@@ -179,30 +175,10 @@ function bbc() {
       format: 'json'
     },
     success: (results) => {
+      mainEl.innerHTML = "";
       console.log(results);
-      let counter = 0;
       results.articles.forEach(function(result, index){
-        if (result.urlToImage == null) {
-          counter++;
-        } else {
-          let impressionsEl = document.createElement('section');
-          impressionsEl.innerHTML = index + 1 - counter;
-          impressionsElement.append(impressionsEl);
-          let image = result.urlToImage;
-          let imageElement = document.createElement('img');
-          imageElement.setAttribute('src', image);
-          featuredImageEl.append(imageElement);
-          let title = result.title;
-          let url = result.url;
-          let urlEl = document.createElement('a');
-          urlEl.setAttribute('href', url);
-          urlEl.innerHTML = title;
-          articleContentEl.append(urlEl);
-          let content = result.description;
-          let contentEl = document.createElement('h6');
-          contentEl.innerHTML = content;
-          articleContentEl.append(contentEl);
-        } //if-else
+        loadPage(result, index);
       })
     } //success
   })

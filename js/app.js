@@ -1,32 +1,44 @@
-// function loadPopUp(url, title, content) {
-//   let titleEl = document.createElement('h1');
-//   titleEl.innerHTML = title;
-//   let contentEl = document.createElement('p');
-//   contentEl.innerHTML = content;
-//   popUpEl.append(contentEl);
-//   let urlEl = document.createElement('a');
-//   urlEl.setAttribute('href', url);
-//   urlEl.innerHTML = "Read more from source";
-// } //loadPopUp
-//
-// function toggleClassFunc() {
-//   $("img").toggleClass("#search.active")
-// } //toggleClass
-
 let mainEl = document.getElementById("main");
+let popUpEl = document.getElementById("popUp");
+
+function loadPopUp(title, content, url) {
+  popUpEl.innerHTML = "";
+  let closer = document.createElement("a");
+  closer.classList.add("closePopUp");
+  closer.innerHTML = "X";
+  let containerEl = document.createElement("div");
+  containerEl.classList.add("container");
+  let titleEl = document.createElement("h1");
+  titleEl.innerHTML = title;
+  let description = document.createElement("p");
+  description.innerHTML = content;
+  let urlEl = document.createElement("a");
+  urlEl.classList.add("popUpAction");
+  urlEl.innerHTML = "Read more from source";
+  urlEl.setAttribute("href", url);
+  popUpEl.appendChild(closer);
+  containerEl.appendChild(titleEl);
+  containerEl.appendChild(description);
+  containerEl.appendChild(urlEl);
+  popUpEl.appendChild(containerEl);
+} //loadPopUp
 
 function loadPage(result, index) {
+  //main variables
+  let photoUrl;
+  if (result.urlToImage == "") {
+    photoUrl = "https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519__340.jpg";
+  } else {
+    photoUrl = result.urlToImage;
+  } //if-else
+  let title = result.title;
+  let content = result.description;
+  let url = result.url;
   //creating main article section
   let articleEl = document.createElement("article");
   articleEl.classList.add("article");
   //creating image content
   let featuredImage = document.createElement("section");
-  let photoUrl;
-  if (result.urlToImage == null) {
-    photoUrl = "https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519__340.jpg";
-  } else {
-    photoUrl = result.urlToImage;
-  } //if-else
   let image = document.createElement("img");
   featuredImage.classList.add("featuredImage");
   image.setAttribute("src", photoUrl);
@@ -37,9 +49,12 @@ function loadPage(result, index) {
   let articleTitle = document.createElement("h3");
   let description = document.createElement("h6");
   articleContent.classList.add("articleContent");
+  link.setAttribute("id", index);
   link.setAttribute("href", "#");
-  articleTitle.innerHTML = result.title;
-  description.innerHTML = result.description;
+  link.setAttribute("onclick", "loadPopUp(title, content, url);");
+  //$(index).on('click', loadPopUp(title, content, url));
+  articleTitle.innerHTML = title;
+  description.innerHTML = content;
   link.appendChild(articleTitle)
   articleContent.appendChild(link);
   articleContent.appendChild(description);
@@ -69,47 +84,7 @@ function onLoad() {
     success: (results) => {
       console.log(results);
       results.articles.forEach(function(result, index){
-        //creating main article section
-        let articleEl = document.createElement("article");
-        articleEl.classList.add("article");
-        //creating image content
-        let featuredImage = document.createElement("section");
-        let photoUrl;
-        if (result.urlToImage == null) {
-          photoUrl = "https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519__340.jpg";
-        } else {
-          photoUrl = result.urlToImage;
-        } //if-else
-        let image = document.createElement("img");
-        featuredImage.classList.add("featuredImage");
-        image.setAttribute("src", photoUrl);
-        featuredImage.appendChild(image);
-        //creating article content
-        let articleContent = document.createElement("section");
-        let link = document.createElement("a");
-        let articleTitle = document.createElement("h3");
-        let description = document.createElement("h6");
-        articleContent.classList.add("articleContent");
-        link.setAttribute("href", "#");
-        articleTitle.innerHTML = result.title;
-        description.innerHTML = result.description;
-        link.appendChild(articleTitle)
-        articleContent.appendChild(link);
-        articleContent.appendChild(description);
-        //creating impressions
-        let impressions = document.createElement("section");
-        impressions.classList.add("impressions");
-        impressions.innerHTML = index + 1;
-        //creating clearfix
-        let clearFix = document.createElement("div");
-        clearFix.classList.add("clearfix");
-        //appending everything to article
-        articleEl.appendChild(featuredImage);
-        articleEl.appendChild(articleContent);
-        articleEl.appendChild(impressions);
-        articleEl.appendChild(clearFix);
-        //appending article to main section
-        mainEl.appendChild(articleEl.cloneNode(true));
+        loadPage(result, index);
       })
     } //success
   })

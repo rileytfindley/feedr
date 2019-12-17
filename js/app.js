@@ -57,6 +57,7 @@ function loadPage(result, index) {
   urlEl.classList.add("popUpAction");
   urlEl.innerHTML = "Read more from source";
   urlEl.setAttribute("href", url);
+  urlEl.setAttribute("target", "_blank");
   popUpEl.appendChild(closer);
   containerEl.appendChild(titleEl);
   containerEl.appendChild(descriptionEl);
@@ -72,7 +73,8 @@ function loadPage(result, index) {
   articleEl.appendChild(impressions);
   articleEl.appendChild(clearFix);
   articleEl.appendChild(popUpEl);
-  link.addEventListener('click', () => {
+  articleEl.addEventListener('click', (e) => {
+    console.log("trigger");
     popUpEl.classList.remove("hidden");
   })
   //appending article to main section

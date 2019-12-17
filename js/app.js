@@ -1,28 +1,6 @@
 let mainEl = document.getElementById("main");
 let popUpEl = document.getElementById("popUp");
 
-function loadPopUp(title, content, url) {
-  popUpEl.innerHTML = "";
-  let closer = document.createElement("a");
-  closer.classList.add("closePopUp");
-  closer.innerHTML = "X";
-  let containerEl = document.createElement("div");
-  containerEl.classList.add("container");
-  let titleEl = document.createElement("h1");
-  titleEl.innerHTML = title;
-  let description = document.createElement("p");
-  description.innerHTML = content;
-  let urlEl = document.createElement("a");
-  urlEl.classList.add("popUpAction");
-  urlEl.innerHTML = "Read more from source";
-  urlEl.setAttribute("href", url);
-  popUpEl.appendChild(closer);
-  containerEl.appendChild(titleEl);
-  containerEl.appendChild(description);
-  containerEl.appendChild(urlEl);
-  popUpEl.appendChild(containerEl);
-} //loadPopUp
-
 function loadPage(result, index) {
   //main variables
   let photoUrl;
@@ -51,11 +29,11 @@ function loadPage(result, index) {
   articleContent.classList.add("articleContent");
   link.setAttribute("id", index);
   link.setAttribute("href", "#");
-  link.setAttribute("onclick", "loadPopUp(title, content, url);");
   //$(index).on('click', loadPopUp(title, content, url));
-  articleTitle.innerHTML = title;
+  //articleTitle.innerHTML = title;
   description.innerHTML = content;
-  link.appendChild(articleTitle)
+  //link.appendChild(articleTitle);
+  link.innerHTML = title;
   articleContent.appendChild(link);
   articleContent.appendChild(description);
   //creating impressions
@@ -65,11 +43,38 @@ function loadPage(result, index) {
   //creating clearfix
   let clearFix = document.createElement("div");
   clearFix.classList.add("clearfix");
+  //pop-up stuff
+  let closer = document.createElement("a");
+  closer.classList.add("closePopUp");
+  closer.innerHTML = "X";
+  let containerEl = document.createElement("div");
+  containerEl.classList.add("container");
+  let titleEl = document.createElement("h1");
+  titleEl.innerHTML = title;
+  let descriptionEl = document.createElement("p");
+  descriptionEl.innerHTML = content;
+  let urlEl = document.createElement("a");
+  urlEl.classList.add("popUpAction");
+  urlEl.innerHTML = "Read more from source";
+  urlEl.setAttribute("href", url);
+  popUpEl.appendChild(closer);
+  containerEl.appendChild(titleEl);
+  containerEl.appendChild(descriptionEl);
+  containerEl.appendChild(urlEl);
+  popUpEl.appendChild(containerEl);
+  popUpEl.classList.add("hidden");
+  closer.addEventListener('click', () => {
+    popUpEl.classList.add("hidden");
+  })
   //appending everything to article
   articleEl.appendChild(featuredImage);
   articleEl.appendChild(articleContent);
   articleEl.appendChild(impressions);
   articleEl.appendChild(clearFix);
+  articleEl.appendChild(popUpEl);
+  link.addEventListener('click', () => {
+    popUpEl.classList.remove("hidden");
+  })
   //appending article to main section
   mainEl.appendChild(articleEl.cloneNode(true));
 } //loadPage

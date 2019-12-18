@@ -1,5 +1,4 @@
 let mainEl = document.getElementById("main");
-let popUpEl = document.getElementById("popUp");
 
 function loadPage(result, index) {
   //main variables
@@ -29,6 +28,7 @@ function loadPage(result, index) {
   articleContent.classList.add("articleContent");
   link.setAttribute("id", index);
   link.setAttribute("href", "#");
+  link.classList.add("openingPopUp");
   //$(index).on('click', loadPopUp(title, content, url));
   //articleTitle.innerHTML = title;
   description.innerHTML = content;
@@ -44,9 +44,12 @@ function loadPage(result, index) {
   let clearFix = document.createElement("div");
   clearFix.classList.add("clearfix");
   //pop-up stuff
+  let popUpEl = document.createElement("div");
+  popUpEl.setAttribute("id", "popUp" + index);
   let closer = document.createElement("a");
   closer.classList.add("closePopUp");
   closer.innerHTML = "X";
+  closer.setAttribute("id", index);
   let containerEl = document.createElement("div");
   containerEl.classList.add("container");
   let titleEl = document.createElement("h1");
@@ -64,19 +67,56 @@ function loadPage(result, index) {
   containerEl.appendChild(urlEl);
   popUpEl.appendChild(containerEl);
   popUpEl.classList.add("hidden");
-  closer.addEventListener('click', () => {
-    popUpEl.classList.add("hidden");
-  })
+  popUpEl.classList.add("loader");
   //appending everything to article
   articleEl.appendChild(featuredImage);
   articleEl.appendChild(articleContent);
   articleEl.appendChild(impressions);
   articleEl.appendChild(clearFix);
   articleEl.appendChild(popUpEl);
-  articleEl.addEventListener('click', (e) => {
-    console.log("trigger");
-    popUpEl.classList.remove("hidden");
-  })
+  mainEl.onclick=(e)=>{
+    console.log(e.target);
+    if (e.target.getAttribute("class") == "openingPopUp") {
+      let temp = document.getElementById("popUp" + e.target.getAttribute("id"));
+      temp.classList.remove("hidden");
+      if (!temp.classList.contains("hidden")) {
+        temp.classList.remove("loader");
+      } //if
+    } //if
+    if (e.target.getAttribute("class") == "closePopUp") {
+      let temp = document.getElementById("popUp" + e.target.getAttribute("id"));
+      temp.classList.add("hidden");
+      if (temp.classList.contains("hidden")) {
+        temp.classList.add("loader");
+      } //if
+      // temp.innerHTML = "";
+      // let closer2 = document.createElement("a");
+      // closer2.classList.add("closePopUp");
+      // closer2.innerHTML = "X";
+      // closer2.setAttribute("id", e.target.getAttribute("id"));
+      // let containerEl2 = document.createElement("div");
+      // containerEl2.classList.add("container");
+      // let titleEl2 = document.createElement("h1");
+      // let title2 = "Temp";
+      // titleEl2.innerHTML = title2;
+      // let descriptionEl2 = document.createElement("p");
+      // let content2 = "tEMP";
+      // descriptionEl2.innerHTML = content2;
+      // let urlEl2 = document.createElement("a");
+      // urlEl2.classList.add("popUpAction");
+      // urlEl2.innerHTML = "Read more from source";
+      // let url2 = "teeeemp";
+      // urlEl2.setAttribute("href", url2);
+      // urlEl2.setAttribute("target", "_blank");
+      // temp.appendChild(closer2);
+      // containerEl2.appendChild(titleEl2);
+      // containerEl2.appendChild(descriptionEl2);
+      // containerEl2.appendChild(urlEl2);
+      // temp.appendChild(containerEl2);
+      // temp.classList.add("hidden");
+      // temp.classList.add("loader");
+    } //if
+  } //remove hidden onclick
   //appending article to main section
   mainEl.appendChild(articleEl.cloneNode(true));
 } //loadPage

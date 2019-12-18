@@ -1,10 +1,19 @@
 let mainEl = document.getElementById("main");
 
+function toggleClassFunc() {
+  temp = document.getElementById("search");
+  if (temp.classList.contains("active")) {
+    temp.classList.remove("active");
+  } else {
+    temp.classList.add("active");
+  } //if-else
+} //toggleClassFunc
+
 function loadPage(result, index) {
   //main variables
   let photoUrl;
   if (result.urlToImage == "") {
-    photoUrl = "https://cdn.pixabay.com/photo/2017/10/25/16/54/african-lion-2888519__340.jpg";
+    photoUrl = "https://upload.wikimedia.org/wikipedia/commons/5/56/Donald_Trump_official_portrait.jpg";
   } else {
     photoUrl = result.urlToImage;
   } //if-else
@@ -20,6 +29,9 @@ function loadPage(result, index) {
   featuredImage.classList.add("featuredImage");
   image.setAttribute("src", photoUrl);
   featuredImage.appendChild(image);
+  featuredImage.onerror = function() {
+    alert("Error loading image.");
+  } //onerror
   //creating article content
   let articleContent = document.createElement("section");
   let link = document.createElement("a");
@@ -61,6 +73,9 @@ function loadPage(result, index) {
   urlEl.innerHTML = "Read more from source";
   urlEl.setAttribute("href", url);
   urlEl.setAttribute("target", "_blank");
+  urlEl.onerror = function() {
+    alert("Error loading " + url);
+  } //onerror
   popUpEl.appendChild(closer);
   containerEl.appendChild(titleEl);
   containerEl.appendChild(descriptionEl);
@@ -89,36 +104,13 @@ function loadPage(result, index) {
       if (temp.classList.contains("hidden")) {
         temp.classList.add("loader");
       } //if
-      // temp.innerHTML = "";
-      // let closer2 = document.createElement("a");
-      // closer2.classList.add("closePopUp");
-      // closer2.innerHTML = "X";
-      // closer2.setAttribute("id", e.target.getAttribute("id"));
-      // let containerEl2 = document.createElement("div");
-      // containerEl2.classList.add("container");
-      // let titleEl2 = document.createElement("h1");
-      // let title2 = "Temp";
-      // titleEl2.innerHTML = title2;
-      // let descriptionEl2 = document.createElement("p");
-      // let content2 = "tEMP";
-      // descriptionEl2.innerHTML = content2;
-      // let urlEl2 = document.createElement("a");
-      // urlEl2.classList.add("popUpAction");
-      // urlEl2.innerHTML = "Read more from source";
-      // let url2 = "teeeemp";
-      // urlEl2.setAttribute("href", url2);
-      // urlEl2.setAttribute("target", "_blank");
-      // temp.appendChild(closer2);
-      // containerEl2.appendChild(titleEl2);
-      // containerEl2.appendChild(descriptionEl2);
-      // containerEl2.appendChild(urlEl2);
-      // temp.appendChild(containerEl2);
-      // temp.classList.add("hidden");
-      // temp.classList.add("loader");
     } //if
   } //remove hidden onclick
   //appending article to main section
   mainEl.appendChild(articleEl.cloneNode(true));
+  mainEl.onerror = function() {
+      alert("Error loading site.");
+  } //onerror
 } //loadPage
 
 function onLoad() {

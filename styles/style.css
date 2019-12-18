@@ -59,7 +59,9 @@
 
 /* Header styles */
 header {
-  background-color: #FE052C;
+  background-color: blue;
+  background-image: url(http://hdwpro.com/wp-content/uploads/2017/12/Animated-Cool-Background.jpg);
+  background-position: center center, center top;
   position: fixed;
   top: 0;
   left: 0;
@@ -103,7 +105,7 @@ header #search a {
 }
 
 header #search a:hover {
-  background: #CC0020;
+  background: #000080;
 }
 
 header #search img {
@@ -128,7 +130,7 @@ header #search.active input {
 }
 
 header #search.active a {
-  background: #CC0020;
+  background: #000080;
 }
 
 header nav a {
@@ -143,7 +145,7 @@ header nav a {
 
 header nav a:hover {
   background-color: #fff;
-  color: #CC0020;
+  color: #000080;
 }
 
 nav ul {
@@ -156,7 +158,7 @@ nav ul {
 
 nav ul li {
 	display:inline-block;
-	background-color: #CC0020;
+	background-color: #000080;
   position: relative;
 }
 
